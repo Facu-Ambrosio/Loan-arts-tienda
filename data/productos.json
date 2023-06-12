@@ -1,0 +1,42 @@
+[
+      {
+            "nombre": "15 Dias Mas",
+            "precio": 9000,
+            "cantidad": 1
+      },
+      {
+            "nombre": "Muerte Roja",
+            "precio": 15000,
+            "cantidad": 1
+      },
+      {
+            "nombre": "Demonios Internos",
+            "precio": 9000,
+            "cantidad": 1
+      },
+      {
+            "nombre": "Vampire Batman",
+            "precio": 15000,
+            "cantidad": 1
+      },
+      {
+            "nombre": "The Hand",
+            "precio": 9000,
+            "cantidad": 1
+      },
+      {
+            "nombre": "Pizza y Alcohol en Gel",
+            "precio": 15000,
+            "cantidad": 1
+      },
+      {
+            "nombre": "Principe Prospero",
+            "precio": 9000,
+            "cantidad": 1
+      },
+      {
+            "nombre": "The Old Men",
+            "precio": 5000,
+            "cantidad": 1
+      }
+]
