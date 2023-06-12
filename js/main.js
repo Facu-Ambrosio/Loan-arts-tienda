@@ -1,4 +1,4 @@
-fetch("https://raw.githubusercontent.com/Facu-Ambrosio/proyectoFinalJS/main/data/catalogo.JSON")
+fetch("https://raw.githubusercontent.com/Facu-Ambrosio/proyectoFinalJS/main/data/productos.json")
       .then(response => response.json())
       .then(data => localStorage.setItem("productos", JSON.stringify(data)));
 
