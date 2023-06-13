@@ -2,130 +2,59 @@
 <html lang="en">
 
 <head>
-      <meta charset="UTF-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Document</title>
-      <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css">
-      <link rel="stylesheet" href="./node_modules/toastify-js/src/toastify.css">
-      <link rel="stylesheet" href="./style/style.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="./node_modules/toastify-js/src/toastify.css">
+  <link rel="stylesheet" href="./style/style.css">
 </head>
 
 <body>
-      <nav class="navbar navbar-expand-lg  colorNav">
-            <div class="container-fluid">
-                  <a class="navbar-brand titulo_logo" href="./index.html">
-                        <h2>
-                              Loan art
-                        </h2>
-                        <img class="logo" src="./Assets/Captura de pantalla 2022-09-29 201215_preview_rev_1.png"
-                              alt="logo">
-                  </a>
-                  <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                        <ul class="nav justify-content-end ">
-                              <li class="nav-item">
-                                    <a class="nav-link colorA" href="./index.html">inicio</a>
-                              </li>
-                              <li class="nav-item">
-                                    <a class="nav-link colorA" href="./pages/carrito.html" id="enlaceCarrito">Carrito</a>
-                              </li>
-                        </ul>
-                  </div>
-            </div>
-      </nav>
+  <nav class="navbar navbar-expand-lg  colorNav">
+    <div class="container-fluid">
+      <a class="navbar-brand titulo_logo" href="./index.html">
+        <h2>
+          Loan art
+        </h2>
+        <img class="logo" src="./Assets/Captura de pantalla 2022-09-29 201215_preview_rev_1.png" alt="logo">
+      </a>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="nav justify-content-end ">
+          <li class="nav-item">
+            <a class="nav-link colorA" href="./index.html">inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link colorA" href="./pages/carrito.html" id="enlaceCarrito">Carrito</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <main class="content container" id="mainCatalogo">
+    <section class="section row row-cols-4 justify-content-center" id="sectionInicio">
+    </section>
+  </main>
 
-      <main class="content" id="mainCatalogo">
-            <section class="section row justify-content-center">
-                  <div class="card col-3  " style="width: 18rem;">
-                        <img src="./Assets/Galeria/reescaladas/15 Dias Mas.jpg" class="card-img-top"
-                              alt="...">
-                        <div class="card-body">
-                              <h5 class="card-title">15 dias mas</h5>
-                              <p class="card-text">precio: $9000</p>
-                              <button type="button" class="btn btn-primary" id="15 Dias Mas">Añadir al carrito </button>
-                        </div>
-                  </div>
-                  <div class="card col-3  " style="width: 18rem;">
-                        <img src="./Assets/Galeria/reescaladas/Muerte Roja.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                              <h5 class="card-title">Muerte Roja</h5>
-                              <p class="card-text">Precio: $15000</p>
-                              <button type="button" class="btn btn-primary" id="Muerte Roja">Añadir al carrito</button>
-                        </div>
-                  </div>
-                  <div class="card col-3  " style="width: 18rem;">
-                        <img src="./Assets/Galeria/reescaladas/Demonios Internos.jpg" class="card-img-top"
-                              alt="...">
-                        <div class="card-body">
-                              <h5 class="card-title">Demonios Internos</h5>
-                              <p class="card-text">Precio: $9000</p>
-                              <button type="button" class="btn btn-primary" id="Demonios Internos">Añadir al carrito</button>
-                        </div>
-                  </div>
-                  <div class="card col-3  " style="width: 18rem;">
-                        <img src="./Assets/Galeria/reescaladas/Vampire Batman.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                              <h5 class="card-title">Vampire Batman</h5>
-                              <p class="card-text">Precio: $15000</p>
-                              <button type="button" class="btn btn-primary" id="Vampire Batman">Añadir al carrito</button>
-                        </div>
-                  </div>
-            </section>
-            <section class="section row justify-content-center">
-                  <div class="card col-3  " style="width: 18rem;">
-                        <img src="./Assets/Galeria/reescaladas/The Hand.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                              <h5 class="card-title">The hand</h5>
-                              <p class="card-text">Precio: $9000</p>
-                              <button type="button" class="btn btn-primary" id="The Hand">Añadir al carrito</button>
-                        </div>
-                  </div>
-                  <div class="card col-3  " style="width: 18rem;">
-                        <img src="./Assets/Galeria/reescaladas/Pizza y Alcohol en Gel.jpg"
-                              class="card-img-top" alt="...">
-                        <div class="card-body">
-                              <h5 class="card-title">Pizza y Alcohol en Gel</h5>
-                              <p class="card-text">Precio: $15000</p>
-                              <button type="button" class="btn btn-primary" id="Pizza y Alcohol en Gel">Añadir al carrito</button>
-                        </div>
-                  </div>
-                  <div class="card col-3  " style="width: 18rem;">
-                        <img src="./Assets/Galeria/reescaladas/Principe Prospero.jpg" class="card-img-top"
-                              alt="...">
-                        <div class="card-body">
-                              <h5 class="card-title">Principe Prospero</h5>
-                              <p class="card-text">Precio: $9000</p>
-                              <button type="button" class="btn btn-primary" id="Principe Prospero">Añadir al carrito</button>
-                        </div>
-                  </div>
-                  <div class="card col-3  " style="width: 18rem;">
-                        <img src="./Assets/Galeria/reescaladas/The Old Men.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                              <h5 class="card-title">The Old Men</h5>
-                              <p class="card-text">Precio: $5000</p>
-                              <button type="button" class="btn btn-primary" id="The Old Men">Añadir al carrito</button>
-                        </div>
-                  </div>
-            </section>
-      </main>
+  <footer class="footer">
+    <div class="footer-section">
+      <h5>2022, Loan arts ©</h5>
+    </div>
+    <div class="footer-section">
+      <a href="https://www.instagram.com/loan_art00/">
+        <img src="./Assets/instagram icono.png" alt="Instagram">
+      </a>
+      <a href="https://www.facebook.com/loan.arts.90">
+        <img src="./Assets/png-transparent-facebook-computer-icons-layout-rectangle-logo-brand.png" alt="Facebook">
+      </a>
+    </div>
+  </footer>
 
-      <footer class="footer">
-            <div class="footer-section">
-                  <h5>2022, Loan arts ©</h5>
-            </div>
-            <div class="footer-section">
-                  <a href="https://www.instagram.com/loan_art00/">
-                        <img src="./Assets/instagram icono.png" alt="Instagram">
-                  </a>
-                  <a href="https://www.facebook.com/loan.arts.90">
-                        <img src="./Assets/png-transparent-facebook-computer-icons-layout-rectangle-logo-brand.png" alt="Facebook">
-                  </a>
-            </div>      
-      </footer>
-
-      <script src="./node_modules/bootstrap/dist/js/bootstrap.js"></script>
-      <script src="./node_modules/toastify-js/src/toastify.js"></script>
-      <script src="./js/main.js"></script>
+  <script src="./node_modules/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="./node_modules/toastify-js/src/toastify.js"></script>
+  <script src="./js/main.js"></script>
 </body>
 
 </html>

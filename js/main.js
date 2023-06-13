@@ -1,57 +1,69 @@
 fetch("https://raw.githubusercontent.com/Facu-Ambrosio/proyectoFinalJS/main/data/productos.json")
-      .then(response => response.json())
-      .then(data => localStorage.setItem("productos", JSON.stringify(data)));
+  .then(response => response.json())
+  .then(data => localStorage.setItem("productos", JSON.stringify(data)))
+  .catch(error => console.log(error));
 
 const alerta = (texto, color) => {
-      if (color === "rojo"){
-            color = "#BF0603";
-      } else {
-            color = "#058C42";
-      }
-      Toastify({
-            text: texto,
-            className: "info",
-            gravity: "bottom", // `top` or `bottom`
-            position: "right", // `left`, `center` or `right`
-            style: {
-                  background: `${color}`,
-            }
-      }).showToast();
+  if (color === "rojo") {
+    color = "#BF0603";
+  } else {
+    color = "#058C42";
+  }
+  Toastify({
+    text: texto,
+    className: "info",
+    gravity: "bottom", // `top` or `bottom`
+    position: "right", // `left`, `center` or `right`
+    style: {
+      background: `${color}`,
+    }
+  }).showToast();
 };
 
-//funcion que aumente la cantidad
-const sumar = (nombre, storage) => {
-      storage.find((el) => el.nombre === nombre).cantidad += 1;
-}
-// funcion que agregue los articulos al array carrito, evento
-const agregar = (e) => {
-      let storage = JSON.parse(localStorage.getItem("carrito"));
-      let nombre = e.target.id; //nombre del articulo, =====> STR
-      let productos = JSON.parse(localStorage.getItem("productos"));
-      let productoNombre = productos.find((el) => el.nombre === nombre); //agarra el objeto en el array productos =====> OBJETO
-      if (!storage) {
-            const storageNuevo = [];
-            storageNuevo.push(productoNombre); //elemento agregado al array carrito
-            localStorage.setItem("carrito", JSON.stringify(storageNuevo));
-      } else {
-            let existencia = storage.some((el) => el.nombre === nombre);
-            if (existencia) {
-                  sumar(nombre, storage);
-            } else {
-                  storage.push(productoNombre);
-            }
-            localStorage.setItem("carrito", JSON.stringify(storage));
-      }
-      alerta(`Agregó ${nombre} al Carrito!!` )
+const agregarAlCarrito = (e) => {
+  let nombre = e.target.id;
+  let carrito = JSON.parse(localStorage.getItem("carrito"));
+  let paraCarrito = productos.find((el) =>el.nombre === nombre);  // { nombre: 'nombre', precio: "", cantidad: 1 }
+  
+  if (!carrito){ //CASO: CARRITO VACIO
+    carrito = [];
+  }  
+  
+  let existencia = carrito.find((el) => el.nombre === nombre);
+  
+  if (existencia){//CASO: CARRITO CON PRODUCTO REPETIDO
+    existencia.cantidad++;
+  } else { //CASO: CARRITO CON PRODUCTO NUEVO
+    carrito.push(paraCarrito);
+  }
+
+  alerta(`Has Agregado "${nombre}" a tu Carrito!!`, "verde")
+  localStorage.setItem("carrito", JSON.stringify(carrito));
 }
 
-const main = () => {
-      let mainCatalogo = document.getElementById("mainCatalogo");
-      let botones = mainCatalogo.getElementsByTagName("button");
-      for (let boton of botones) {
-            boton.addEventListener("click", agregar);
-      }
-}
+const renderTotal = () => { //muestra en pantalla todos los productos y les agrega el evento
+  let section = document.getElementById("sectionInicio");
 
-main()
+  for (let i of productos){
+    let div = document.createElement("div");
+    div.classList.add("card", "col", "cardInicio");
+    div.innerHTML=`
+    <img src="./Assets/Galeria/reescaladas/${i.nombre}.jpg" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">${i.nombre}</h5>
+      <p class="card-text">precio: ${i.precio}</p>
+      <button type="button" class="btn btn-primary" id="${i.nombre}">Añadir al carrito </button>
+    </div>
+    `;
+    section.appendChild(div);
+  }
 
+  let boton = document.getElementsByTagName("button");
+  for (let i of boton){
+    i.addEventListener("click", agregarAlCarrito);
+  }
+};
+
+
+let productos = JSON.parse(localStorage.getItem("productos"));
+renderTotal();
