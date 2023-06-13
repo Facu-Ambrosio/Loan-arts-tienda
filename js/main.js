@@ -20,15 +20,17 @@ const alerta = (texto, color) => {
   }).showToast();
 };
 
+const carritoVacio = () => {
+  if(!carrito){
+    carrito = []
+  }
+  localStorage.setItem("carrito",JSON.stringify(carrito));
+};
+
+
 const agregarAlCarrito = (e) => {
   let nombre = e.target.id;
-  let carrito = JSON.parse(localStorage.getItem("carrito"));
   let paraCarrito = productos.find((el) =>el.nombre === nombre);  // { nombre: 'nombre', precio: "", cantidad: 1 }
-  
-  if (!carrito){ //CASO: CARRITO VACIO
-    carrito = [];
-  }  
-  
   let existencia = carrito.find((el) => el.nombre === nombre);
   
   if (existencia){//CASO: CARRITO CON PRODUCTO REPETIDO
@@ -40,6 +42,8 @@ const agregarAlCarrito = (e) => {
   alerta(`Has Agregado "${nombre}" a tu Carrito!!`, "verde")
   localStorage.setItem("carrito", JSON.stringify(carrito));
 }
+
+
 
 const renderTotal = () => { //muestra en pantalla todos los productos y les agrega el evento
   let section = document.getElementById("sectionInicio");
@@ -65,5 +69,8 @@ const renderTotal = () => { //muestra en pantalla todos los productos y les agre
 };
 
 
+
+let carrito = JSON.parse(localStorage.getItem("carrito"));
+carritoVacio();
 let productos = JSON.parse(localStorage.getItem("productos"));
 renderTotal();
