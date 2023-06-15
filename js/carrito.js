@@ -30,14 +30,26 @@ const renderPrecioTotal = (accion) => { //dependiendo de la accion, si es crear 
   if (accion === "crear"){ //si se crea el div de precioTotal
     let div = document.createElement("div"); //Se crea un div
     div.id = "precioTotal" //se le declara un id
-    div.classList.add("alert", "alert-success"); //se le añade las siguientes clases
+    div.classList.add("alert", "alert-success", "precioTotalCarrito", "justify-content-between"); //se le añade las siguientes clases
     div.innerHTML= `
-    El precio total es de $${total}
+    <div>
+      El precio total es de $${total}
+    </div>
+    <div class = "col-2">
+      <button type="button" class="btn btn-success">Finalizar Compra</button>
+    </div>
     `; //se crea su interior
     section.append(div); //se lo agrega al section
   } else { //si lo que se hace es modificar ese div, es decir, se van sacando elementos del carrito y se tiene que modificar el precio total 
     let div = document.getElementById("precioTotal"); //se obtiene el div previamente creado
-    total === 0 ? (div.remove(), alerta("El Carrito Está Vacio, Vuelva al Inicio", "info")) : div.innerHTML = `El precio total es de $${total}`; //si el precio total es cero, quiere decir que se quitaron todos los elementos del carrito, por lo tanto se elimina el div, sino se va cambiando el interior de ese div
+    total === 0 ? (div.remove(), alerta("El Carrito Está Vacio, Vuelva al Inicio", "info")) : div.innerHTML = `
+    <div>
+      El precio total es de $${total}
+    </div>
+    <div class = "col-2">
+      <button type="button" class="btn btn-success">Finalizar Compra</button>
+    </div>
+    `; //si el precio total es cero, quiere decir que se quitaron todos los elementos del carrito, por lo tanto se elimina el div, sino se va cambiando el interior de ese div
   }
 }
 

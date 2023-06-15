@@ -4,9 +4,9 @@ fetch("https://raw.githubusercontent.com/Facu-Ambrosio/proyectoFinalJS/main/data
   .then(data => localStorage.setItem("productos", JSON.stringify(data)))
   .catch(error => console.log(error));
 
-// funcion que crea notificaciones, donde se puede poner un texto y un color
+  // funcion que crea notificaciones, donde se puede poner un texto y un color
 const alertaNotificacion = (texto, color) => {
-  color === "rojo" ? color = "#BF0603" : color = "#27C696" 
+  color === "rojo" ? color = "#BF0603" : color = "#2EAC67" 
   Toastify({
     text: texto,
     className: "info",
@@ -18,27 +18,73 @@ const alertaNotificacion = (texto, color) => {
   }).showToast();
 };
 
-// funcion que inicializa el carrito como un array vacio en el caso de que el carrito este vacio
-const carritoVacio = () => {
-  !carrito && (carrito = []); //si no existe ningun carrito en el localStorage, lo toma como un array vacio 
-  localStorage.setItem("carrito",JSON.stringify(carrito)); //lo envia al localStorage
+const renderCarrito = (objeto, operacion) => {
+  let ul = document.getElementById("canvasCarrito");
+  let nombre = objeto.nombre;
+  let precio = objeto.precio;
+  let cantidad = objeto.cantidad;
+  let li;
+
+  if (operacion === "crear"){
+    li = document.createElement("li");
+    li.classList.add("list-group-item", "listaCarrito", "align-items-center", "listItemsCarrito"); 
+    li.id = `${nombre.replace(/ /g, "_")}_li` 
+  } else if(operacion === "modificar") {
+    li = document.getElementById(`${nombre.replace(/ /g, "_")}_li`);
+  } else if(operacion === "sacar"){}
+
+  li.innerHTML=`
+  <div class = "divCarritoImagen col-2">
+    <img src="../Assets/Galeria/reescaladas/${nombre}.jpg" class = "imagenCarrito">
+  </div>
+  <div class = "col-4">
+    ${nombre} x ${cantidad}
+  </div>
+  <div class ="col-3  precioCarrito justify-content-end">
+    Precio: $ ${cantidad * precio}
+  </div>
+  <div class = "col-2">
+    <button type="button" class="btn btn-danger" id = "${nombre}">
+      Sacar del carrito
+    </button>
+  </div>
+  `;
+  ul.append(li);
 };
 
-// funcion que agrega los elementos del index en forma de cards al carrito, y luego el carrito al localStorage
-const agregarAlCarrito = (e) => {
-  let nombre = e.target.id; //nombre del producto, presente como id en el <button> 
-  let paraCarrito; //objeto que se sube al carrito
-  let existencia = carrito.find((el) => el.nombre === nombre); //busca el objeto en el carrito
-  existencia ? (existencia.cantidad++) : (paraCarrito = productos.find((el) =>el.nombre === nombre), carrito.push(paraCarrito)) //si el objeto en el carrito existe le aumenta la cantidad, si no existe, el objeto paraCarrito se define como el objeto guardado en productos, y luego se lo sube al carrito
+const carritoRenderTotal = () => {
+  if (!carrito){
+    carrito = [];
+    localStorage.setItem("carrito",JSON.stringify(carrito));
+  } else {
+    for (let i of carrito) {
+      renderCarrito(i, "crear");
+    }
+  }
+};
 
-  alertaNotificacion(`Has Agregado "${nombre}" a tu Carrito!!`, "verde") //notificacion de que se agrego un producto al carrito
-  localStorage.setItem("carrito", JSON.stringify(carrito)); //subida del carrito al localStorage
-}
+const agregarAlCarritoStorage = (e) => {
+  let nombre = e.target.id;
+  let objeto = productos.find((el) => el.nombre === nombre);//{nombre: "dibujo", precio: "precio", cantidad: 1}
+
+  let carrito = JSON.parse(localStorage.getItem("carrito")); 
+  let objetoEnCarrito = carrito.find((el) => el.nombre === nombre); //existe en producto en carrito??
+
+  if (!objetoEnCarrito){//no existe
+    objetoEnCarrito = objeto;
+    carrito.push(objetoEnCarrito);
+    renderCarrito(objetoEnCarrito, "crear");
+  } else {
+    objetoEnCarrito.cantidad++;
+    renderCarrito(objetoEnCarrito, "modificar");
+  }
+  alertaNotificacion(`Has Agregado ${objetoEnCarrito.cantidad} producto/s de "${nombre}" al Carrito!!`, "verde" )
+  localStorage.setItem("carrito",JSON.stringify(carrito));
+};
 
 // funcion que muestra en pantalla todos los productos del array 
 const renderTotal = () => { //muestra en pantalla todos los productos y les agrega el evento
   let section = document.getElementById("sectionInicio"); //section donde van a mostrarse y ordenar todos los productos
-
   for (let i of productos){ //por cada obejo en el array productos
     let div = document.createElement("div");  //se crea un div en el HTML
     div.classList.add("card", "col", "cardInicio"); //se le agrega las siguientes clases
@@ -52,16 +98,16 @@ const renderTotal = () => { //muestra en pantalla todos los productos y les agre
     `;// se define el interior de ese div
     section.appendChild(div); //se agrega el div en el section
   }
-
   let boton = document.getElementsByTagName("button"); //obtengo todos los botones de todos los div's creados antes
   for (let i of boton){//a cada boton de los div's que se generan en el section
-    i.addEventListener("click", agregarAlCarrito); //se le agrega un evento, agregarAlCarrito
+    i.addEventListener("click", agregarAlCarritoStorage); //se le agrega un evento, agregarAlCarrito
   }
 };
 
-
 // inicializacion del carrito
 let carrito = JSON.parse(localStorage.getItem("carrito")); //inicializacion del carrito
-carritoVacio();//si esta vacio 
+carritoRenderTotal();
 let productos = JSON.parse(localStorage.getItem("productos")); //array de productos
 renderTotal(); //render de toda la pagina
+
+

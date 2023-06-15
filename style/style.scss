@@ -39,6 +39,66 @@ h2 {
   margin-top: 2%;
 }
 
+.button-24 {
+  background: #DBC8AC;
+  border: 1px solid #DBC8AC;
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
+  box-sizing: border-box;
+  color: #DD5353;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 16px;
+  min-height: 40px;
+  outline: 0;
+  padding: 12px 14px;
+  text-align: center;
+  text-rendering: geometricprecision;
+  text-transform: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+}
+
+.button-24:hover,
+.button-24:active {
+  background-color: initial;
+  background-position: 0 0;
+  color: #DBC8AC;
+}
+
+.button-24:active {
+  opacity: .5;
+}
+
+/* .boton-pointer {
+  position: relative;
+  display: inline-block;
+  padding: 1px 1px;
+  background-color: #DBC8AC; 
+  border: none;
+  color: #000; 
+}
+
+
+
+.boton-pointer:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -20px;
+  width: 0;
+  height: 0;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  border-right: 20px solid #DBC8AC; 
+}
+ */
+
+
 /* FOOTER */
 
 body {
@@ -53,7 +113,7 @@ body {
 
 .content {
   min-height: 100%;
-  /* Aquí puedes añadir estilos adicionales para el contenido de tu sitio web */
+  padding-top: 3%;
 }
 
 .footer {
@@ -108,20 +168,24 @@ body {
 .listaCarrito {
   display: flex;
   flex-direction: row;
-  gap: 16px;
-  background-color: #DBC8AC;
+  justify-content: space-between;
 }
 
-.ulCarrito {
-  width: 55%;
-  margin-top: 2%;
-}
+
 
 .listItemsCarrito {
   border-color: #00000026;
-  background-color: #DBC8AC;
 }
 
 .precioCarrito {
   display: flex;
+}
+
+.precioTotalCarrito{
+  display: flex;
+  align-items: center;
+  width: 55%;
+}
+#offcanvasRight{
+  width: 32%;
 }

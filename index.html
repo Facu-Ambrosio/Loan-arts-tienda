@@ -12,7 +12,7 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg  colorNav">
+  <nav class="navbar fixed-top navbar-expand-lg colorNav">
     <div class="container-fluid">
       <a class="navbar-brand titulo_logo" href="./index.html">
         <h2>
@@ -22,12 +22,10 @@
       </a>
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="nav justify-content-end UlNav">
-          <li class="nav-item colorLiNav">
-            <a class="nav-link colorA" href="./index.html">inicio</a>
+          <li class="nav-item boton-pointer" id="btnCarrito">
+            <a class="btn button-24" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" >Carrito</a>
           </li>
-          <li class="nav-item colorLiNav">
-            <a class="nav-link colorA" href="./pages/carrito.html" id="enlaceCarrito">Carrito</a>
-          </li>
+          <!-- <button class="button-24 btn" role="button">Button 24</button> -->
         </ul>
       </div>
     </div>
@@ -36,6 +34,24 @@
   <main class="content container" id="mainCatalogo">
     <section class="section row row-cols-4 justify-content-center" id="sectionInicio">
     </section>
+    
+    <!-- canvas-->
+    <section class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasRightLabel">Carrito de Compras</h5>
+      </div>
+
+      <div class="offcanvas-body">
+        <div>
+          <ul class="list-group list-group-flush" id="canvasCarrito">
+          </ul>
+        </div>
+      </div>
+
+    </section>
+
+
   </main>
 
   <footer class="footer">
