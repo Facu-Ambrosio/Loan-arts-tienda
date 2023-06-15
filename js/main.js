@@ -1,22 +1,28 @@
-// obtencion del array de objetos "productos" con un fetch, se guarda en localStorage
+
 fetch("https://raw.githubusercontent.com/Facu-Ambrosio/proyectoFinalJS/main/data/productos.json")
   .then(response => response.json())
   .then(data => localStorage.setItem("productos", JSON.stringify(data)))
   .catch(error => console.log(error));
 
-  // funcion que crea notificaciones, donde se puede poner un texto y un color
+  
 const alertaNotificacion = (texto, color) => {
   color === "rojo" ? color = "#BF0603" : color = "#2EAC67" 
   Toastify({
     text: texto,
     className: "info",
-    gravity: "bottom", // `top` or `bottom`
-    position: "right", // `left`, `center` or `right`
+    gravity: "bottom", 
+    position: "right", 
     style: {
       background: `${color}`,
     }
   }).showToast();
 };
+
+const sacarCarrito = (e) => {
+  let nombre = e;
+  console.log(nombre);
+};
+
 
 const renderCarrito = (objeto, operacion) => {
   let ul = document.getElementById("canvasCarrito");
@@ -44,12 +50,14 @@ const renderCarrito = (objeto, operacion) => {
     Precio: $ ${cantidad * precio}
   </div>
   <div class = "col-2">
-    <button type="button" class="btn btn-danger" id = "${nombre}">
+    <button type="button" class="btn btn-danger" id = "${nombre.replace(/ /g, "_")}_btn">
       Sacar del carrito
     </button>
   </div>
   `;
   ul.append(li);
+
+  
 };
 
 const carritoRenderTotal = () => {
@@ -65,12 +73,12 @@ const carritoRenderTotal = () => {
 
 const agregarAlCarritoStorage = (e) => {
   let nombre = e.target.id;
-  let objeto = productos.find((el) => el.nombre === nombre);//{nombre: "dibujo", precio: "precio", cantidad: 1}
+  let objeto = productos.find((el) => el.nombre === nombre);
 
   let carrito = JSON.parse(localStorage.getItem("carrito")); 
-  let objetoEnCarrito = carrito.find((el) => el.nombre === nombre); //existe en producto en carrito??
+  let objetoEnCarrito = carrito.find((el) => el.nombre === nombre); 
 
-  if (!objetoEnCarrito){//no existe
+  if (!objetoEnCarrito){
     objetoEnCarrito = objeto;
     carrito.push(objetoEnCarrito);
     renderCarrito(objetoEnCarrito, "crear");
@@ -82,12 +90,12 @@ const agregarAlCarritoStorage = (e) => {
   localStorage.setItem("carrito",JSON.stringify(carrito));
 };
 
-// funcion que muestra en pantalla todos los productos del array 
-const renderTotal = () => { //muestra en pantalla todos los productos y les agrega el evento
-  let section = document.getElementById("sectionInicio"); //section donde van a mostrarse y ordenar todos los productos
-  for (let i of productos){ //por cada obejo en el array productos
-    let div = document.createElement("div");  //se crea un div en el HTML
-    div.classList.add("card", "col", "cardInicio"); //se le agrega las siguientes clases
+
+const renderTotal = () => { 
+  let section = document.getElementById("sectionInicio"); 
+  for (let i of productos){ 
+    let div = document.createElement("div");  
+    div.classList.add("card", "col", "cardInicio"); 
     div.innerHTML=`
     <img src="./Assets/Galeria/reescaladas/${i.nombre}.jpg" class="card-img-top" alt="...">
     <div class="card-body">
@@ -95,19 +103,17 @@ const renderTotal = () => { //muestra en pantalla todos los productos y les agre
       <p class="card-text">precio: ${i.precio}</p>
       <button type="button" class="btn btn-primary" id="${i.nombre}">Añadir al carrito </button>
     </div>
-    `;// se define el interior de ese div
-    section.appendChild(div); //se agrega el div en el section
-  }
-  let boton = document.getElementsByTagName("button"); //obtengo todos los botones de todos los div's creados antes
-  for (let i of boton){//a cada boton de los div's que se generan en el section
-    i.addEventListener("click", agregarAlCarritoStorage); //se le agrega un evento, agregarAlCarrito
+    `;
+    section.appendChild(div); 
+    let btn = document.getElementById(`${i.nombre}`);
+    btn.addEventListener("click", agregarAlCarritoStorage)
   }
 };
 
-// inicializacion del carrito
-let carrito = JSON.parse(localStorage.getItem("carrito")); //inicializacion del carrito
+
+let carrito = JSON.parse(localStorage.getItem("carrito")); 
 carritoRenderTotal();
-let productos = JSON.parse(localStorage.getItem("productos")); //array de productos
-renderTotal(); //render de toda la pagina
+let productos = JSON.parse(localStorage.getItem("productos")); 
+renderTotal(); 
 
 

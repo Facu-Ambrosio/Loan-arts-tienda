@@ -75,29 +75,6 @@ h2 {
   opacity: 0.5;
 }
 
-/* .boton-pointer {
-  position: relative;
-  display: inline-block;
-  padding: 1px 1px;
-  background-color: #DBC8AC; 
-  border: none;
-  color: #000; 
-}
-
-
-
-.boton-pointer:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -20px;
-  width: 0;
-  height: 0;
-  border-top: 20px solid transparent;
-  border-bottom: 20px solid transparent;
-  border-right: 20px solid #DBC8AC; 
-}
- */
 /* FOOTER */
 body {
   background-color: #DBC8AC;
