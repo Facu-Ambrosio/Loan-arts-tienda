@@ -32,6 +32,7 @@ h2 {
 
 .colorNav {
   background-color: #DD5353;
+  padding: 0;
 }
 
 .cardInicio {
@@ -88,7 +89,7 @@ body {
 
 .content {
   min-height: 100%;
-  padding-top: 3%;
+  padding-top: 5%;
 }
 
 .footer {
@@ -157,7 +158,6 @@ body {
 .precioTotalCarrito {
   display: flex;
   align-items: center;
-  width: 55%;
 }
 
 #offcanvasRight {
