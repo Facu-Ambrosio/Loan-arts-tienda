@@ -155,11 +155,6 @@ body {
   display: flex;
 }
 
-.precioTotalCarrito {
-  display: flex;
-  align-items: center;
-}
-
 #offcanvasRight {
   width: 32%;
 }/*# sourceMappingURL=style.css.map */
