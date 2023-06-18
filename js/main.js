@@ -1,67 +1,170 @@
-// obtencion del array de objetos "productos" con un fetch, se guarda en localStorage
-fetch("https://raw.githubusercontent.com/Facu-Ambrosio/proyectoFinalJS/main/data/productos.json")
-  .then(response => response.json())
-  .then(data => localStorage.setItem("productos", JSON.stringify(data)))
-  .catch(error => console.log(error));
-
-// funcion que crea notificaciones, donde se puede poner un texto y un color
+// funcion asincronica que trae los datos de un JSON
+const fetchData = async () => {
+  try {
+    const response = await fetch("https://raw.githubusercontent.com/Facu-Ambrosio/proyectoFinalJS/main/data/productos.json");
+    const data = await response.json();
+    localStorage.setItem("productos", JSON.stringify(data));
+  } catch (error) {
+    console.log(error);
+  }
+};
+// funcion de notificiaciones 
 const alertaNotificacion = (texto, color) => {
-  color === "rojo" ? color = "#BF0603" : color = "#27C696" 
+  color === "rojo" ? color = "#BF0603" : color = "#2EAC67" 
   Toastify({
     text: texto,
+    duration: 1500,
+    stopOnFocus: false,
     className: "info",
-    gravity: "bottom", // `top` or `bottom`
-    position: "right", // `left`, `center` or `right`
+    gravity: "bottom", 
+    position: "right", 
     style: {
       background: `${color}`,
     }
   }).showToast();
 };
 
-// funcion que inicializa el carrito como un array vacio en el caso de que el carrito este vacio
-const carritoVacio = () => {
-  !carrito && (carrito = []); //si no existe ningun carrito en el localStorage, lo toma como un array vacio 
-  localStorage.setItem("carrito",JSON.stringify(carrito)); //lo envia al localStorage
+// funcion que realiza el render del precio total
+const renderPrecio = (etapa) => {
+  let carrito = JSON.parse(localStorage.getItem("carrito")); //se obtiene el carrito del storage
+  let total = carrito.reduce((acumulador, objeto) => acumulador + (objeto.precio * objeto.cantidad), 0); //se calcula el precio total de los elementos dentro del carrito
+  let listaCarrito = document.getElementById("canvasCarrito"); //ul del carrito
+  let precioTotal; //declaracion de item de la lista que va a contener el precio total
+  if (carrito.length === 0){ //si no hay elementos en el carrito
+    let precioPrevio = document.getElementById("precioTotal"); //li del precio total existente (en caso de que se eliminen elementos del carrito hasta vaciarlo, se declara esta variable que obtiene dicho li)
+    if(precioPrevio){ //si es el caso en que se eliminaron elementos hasta vaciarlo
+      precioPrevio.remove(); //se remueve el li
+    }
+    precioTotal = document.createElement("li") //se crea otro li
+    precioTotal.id = "precioTotal";
+    precioTotal.classList.add("list-group-item", "precioCarrito", "align-items-center", "listItemsCarrito", "justify-content-center");  
+    precioTotal.innerHTML=`
+    <h5>El Carrito está Vacío</h5>
+    `;
+  } else { //si el carrito no esta vacio
+    if(etapa === "inicio"){ //si se inicia la pagina
+      precioTotal = document.createElement("li");
+      precioTotal.id = "precioTotal";
+      precioTotal.classList.add("list-group-item", "precioCarrito", "align-items-center", "listItemsCarrito", "justify-content-center");  
+    } else { //si no se inicia la pagina
+      precioTotal = document.getElementById("precioTotal");
+    }
+    precioTotal.innerHTML=`
+    <h5>El Precio Total es de $${total}</h5>
+    <button type="button" class="btn btn-success">Finalizar Compra</button>
+    `;
+  }
+  listaCarrito.append(precioTotal);
+}
+// funcion que permite sacar elementos del carrito
+const sacarDelCarrito = (e) => {
+  let item = (e.target).parentNode.parentNode; //li del elemento del carrito
+  let nombre = (item.id).replace(/_/g, " "); //nombre del producto
+  let carrito = JSON.parse(localStorage.getItem("carrito")); 
+  let carritoSinProducto = carrito.filter((el) => el.nombre != nombre); //carrito nuevo sin el producto que se quiere sacar
+  localStorage.setItem("carrito",JSON.stringify(carritoSinProducto)); //se reemplaza el carrito viejo, con el que no tiene el elemntos que se saco
+  item.remove(); //se remueve ese item del producto que estaba en el carrito
+  renderPrecio("modificacion");
 };
 
-// funcion que agrega los elementos del index en forma de cards al carrito, y luego el carrito al localStorage
-const agregarAlCarrito = (e) => {
-  let nombre = e.target.id; //nombre del producto, presente como id en el <button> 
-  let paraCarrito; //objeto que se sube al carrito
-  let existencia = carrito.find((el) => el.nombre === nombre); //busca el objeto en el carrito
-  existencia ? (existencia.cantidad++) : (paraCarrito = productos.find((el) =>el.nombre === nombre), carrito.push(paraCarrito)) //si el objeto en el carrito existe le aumenta la cantidad, si no existe, el objeto paraCarrito se define como el objeto guardado en productos, y luego se lo sube al carrito
+// hacer aparecer los elementos en el carrito
+const renderCarrito = (objeto, operacion) => {
+  let listaCarrito = document.getElementById("canvasCarrito"); //creacion de la lista que contiene los elementos del carrito
+  let nombre = objeto.nombre;
+  let precio = objeto.precio;
+  let cantidad = objeto.cantidad;
+  let productosCarrito; //li de los productos
+  if (operacion === "crear"){ //si se agrega un elemento al carrito
+    productosCarrito = document.createElement("li");
+    productosCarrito.classList.add("list-group-item", "listaCarrito", "align-items-center", "listItemsCarrito"); 
+    productosCarrito.id = `${nombre.replace(/ /g, "_")}` 
+  } else if(operacion === "modificar") { //si se modifica la cantidad del producto en el carrito
+    productosCarrito = document.getElementById(`${nombre.replace(/ /g, "_")}`);
+  } 
+  productosCarrito.innerHTML=`
+  <div class = "divCarritoImagen col-2">
+    <img src="../Assets/Galeria/reescaladas/${nombre}.jpg" class = "imagenCarrito">
+  </div>
+  <div class = "col-4">
+    ${nombre} x ${cantidad}
+  </div>
+  <div class ="col-3  precioCarrito justify-content-end">
+    Precio: $ ${cantidad * precio}
+  </div>
+  <div class = "col-2">
+    <button type="button" class="btn btn-danger">
+      Sacar del carrito
+    </button>
+  </div>
+  `;
+  listaCarrito.append(productosCarrito);
+  let botonSacarDelCarrito = listaCarrito.querySelectorAll("button");
+  for (let i of botonSacarDelCarrito){
+    i.addEventListener("click", sacarDelCarrito);
+  }
+};
 
-  alertaNotificacion(`Has Agregado "${nombre}" a tu Carrito!!`, "verde") //notificacion de que se agrego un producto al carrito
-  localStorage.setItem("carrito", JSON.stringify(carrito)); //subida del carrito al localStorage
-}
+// funcion mete los elementos en el carrito o les aumenta la cantidad
+const agregarAlCarritoStorage = (e) => {
+  let nombre = ((e.target.parentNode.parentNode).id).replace(/\./g, " "); //nombre del producto que se quiere agregar al carrito
 
-// funcion que muestra en pantalla todos los productos del array 
-const renderTotal = () => { //muestra en pantalla todos los productos y les agrega el evento
-  let section = document.getElementById("sectionInicio"); //section donde van a mostrarse y ordenar todos los productos
+  let carrito = JSON.parse(localStorage.getItem("carrito")); 
+  let objeto = productos.find((el) => el.nombre === nombre); //objeto que se quiere agregar
+  let objetoEnCarrito = carrito.find((el) => el.nombre === nombre);  //verificacion si el objeto ya estaba en el carrito
 
-  for (let i of productos){ //por cada obejo en el array productos
-    let div = document.createElement("div");  //se crea un div en el HTML
-    div.classList.add("card", "col", "cardInicio"); //se le agrega las siguientes clases
-    div.innerHTML=`
+  if (!objetoEnCarrito){ //si el producto no estaba en el carrito
+    objetoEnCarrito = objeto;
+    carrito.push(objetoEnCarrito);
+    localStorage.setItem("carrito",JSON.stringify(carrito));
+    renderCarrito(objetoEnCarrito, "crear");
+  } else { //si ya estaba el producto en el carrito
+    objetoEnCarrito.cantidad++;
+    localStorage.setItem("carrito",JSON.stringify(carrito));
+    renderCarrito(objetoEnCarrito, "modificar");
+  }
+  renderPrecio("modificacion");
+  alertaNotificacion(`Has Agregado ${objetoEnCarrito.cantidad} producto/s de "${nombre}" al Carrito!!`, "verde" )
+};
+
+// funcion que cuando se inicia la pagina y se inicializa el carrito, se hace vacio, o se renderiza todos los elementos del carrito
+const renderCarritoTotal = () => {
+  if (!carrito){ //si el carrito no existe al inicio de la pagina, se inicializa como un array vacio en el storage
+    carrito = [];
+    localStorage.setItem("carrito",JSON.stringify(carrito));
+  } else {
+    for (let i of carrito) { //se renderizan todos los elementos del carrito
+      renderCarrito(i, "crear");
+    }
+  }
+  renderPrecio("inicio");
+};
+// funcion que renderiza todo el catalogo 
+const renderTotal = () => { 
+  let catalogo = document.getElementById("sectionInicio"); 
+  for (let i of productos){ 
+    let card = document.createElement("div");  
+    card.classList.add("card", "col", "cardInicio");
+    card.id = `${i.nombre.replace(/ /g, ".")}`
+    card.innerHTML=`
     <img src="./Assets/Galeria/reescaladas/${i.nombre}.jpg" class="card-img-top" alt="...">
     <div class="card-body">
       <h5 class="card-title">${i.nombre}</h5>
       <p class="card-text">precio: ${i.precio}</p>
-      <button type="button" class="btn btn-primary" id="${i.nombre}">Añadir al carrito </button>
+      <button type="button" class="btn btn-primary">Añadir al carrito </button>
     </div>
-    `;// se define el interior de ese div
-    section.appendChild(div); //se agrega el div en el section
-  }
-
-  let boton = document.getElementsByTagName("button"); //obtengo todos los botones de todos los div's creados antes
-  for (let i of boton){//a cada boton de los div's que se generan en el section
-    i.addEventListener("click", agregarAlCarrito); //se le agrega un evento, agregarAlCarrito
+    `;
+    catalogo.appendChild(card); 
+    let botonAñadirAlCarrito = catalogo.querySelectorAll(`button`);
+    for (let i of botonAñadirAlCarrito){
+      i.addEventListener("click", agregarAlCarritoStorage);
+    }
   }
 };
 
+// main
+let productos = JSON.parse(localStorage.getItem("productos")); 
+let carrito = JSON.parse(localStorage.getItem("carrito")); 
+fetchData();
+renderTotal(); 
+renderCarritoTotal();
 
-// inicializacion del carrito
-let carrito = JSON.parse(localStorage.getItem("carrito")); //inicializacion del carrito
-carritoVacio();//si esta vacio 
-let productos = JSON.parse(localStorage.getItem("productos")); //array de productos
-renderTotal(); //render de toda la pagina
