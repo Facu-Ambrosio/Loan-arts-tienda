@@ -38,6 +38,7 @@ h2 {
 .cardInicio {
   width: 18rem;
   margin-top: 2%;
+  box-shadow: 6px 4px 5px rgba(0, 0, 0, 0.2);
 }
 
 .button-24 {
@@ -153,6 +154,8 @@ body {
 
 .precioCarrito {
   display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 #offcanvasRight {
