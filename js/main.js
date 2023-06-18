@@ -21,6 +21,7 @@ const alertaNotificacion = (texto, color) => {
     }
   }).showToast();
 };
+
 // funcion que realiza el render del precio total
 const renderPrecio = (etapa) => {
   let carrito = JSON.parse(localStorage.getItem("carrito")); 
@@ -55,11 +56,13 @@ const renderPrecio = (etapa) => {
 }
 // funcion que permite sacar elementos del carrito
 const sacarDelCarrito = (e) => {
-  let btn = e.target;
-  let id = e.target.id
+  // let btn = e.target;
+  // let liABorrar = btn.parentNode.parentNode;
+  // let id = liABorrar.id;
+  // let nombre = id.replace(/_/g, " ");
+  let liABorrar = (e.target).parentNode.parentNode;
+  let nombre = (liABorrar.id).replace(/_/g, " ");
   let carrito = JSON.parse(localStorage.getItem("carrito")); 
-  let liABorrar = btn.parentNode.parentNode;
-  let nombre = id.replace(/_/g, " ");
   let carritoSinProducto = carrito.filter((el) => el.nombre != nombre);
   localStorage.setItem("carrito",JSON.stringify(carritoSinProducto));
   liABorrar.remove();
@@ -76,9 +79,9 @@ const renderCarrito = (objeto, operacion) => {
   if (operacion === "crear"){
     li = document.createElement("li");
     li.classList.add("list-group-item", "listaCarrito", "align-items-center", "listItemsCarrito"); 
-    li.id = `${nombre.replace(/ /g, "_")}_li` 
+    li.id = `${nombre.replace(/ /g, "_")}` 
   } else if(operacion === "modificar") {
-    li = document.getElementById(`${nombre.replace(/ /g, "_")}_li`);
+    li = document.getElementById(`${nombre.replace(/ /g, "_")}`);
   } 
   li.innerHTML=`
   <div class = "divCarritoImagen col-2">
@@ -91,34 +94,37 @@ const renderCarrito = (objeto, operacion) => {
     Precio: $ ${cantidad * precio}
   </div>
   <div class = "col-2">
-    <button type="button" class="btn btn-danger" id = "${nombre.replace(/ /g, "_")}">
+    <button type="button" class="btn btn-danger">
       Sacar del carrito
     </button>
   </div>
   `;
   ul.append(li);
-  let btn = document.getElementById(`${nombre.replace(/ /g, "_")}`);
-  btn.addEventListener("click", sacarDelCarrito);
+  let btn = ul.querySelectorAll("button");
+  for (let i of btn){
+    i.addEventListener("click", sacarDelCarrito);
+  }
 };
 
 // funcion mete los elementos en el carrito o les aumenta la cantidad
 const agregarAlCarritoStorage = (e) => {
-  let nombre = e.target.id;
-  let objeto = productos.find((el) => el.nombre === nombre);
+  let nombre = ((e.target.parentNode.parentNode).id).replace(/\./g, " ");
+
   let carrito = JSON.parse(localStorage.getItem("carrito")); 
+  let objeto = productos.find((el) => el.nombre === nombre);
   let objetoEnCarrito = carrito.find((el) => el.nombre === nombre); 
+
   if (!objetoEnCarrito){
     objetoEnCarrito = objeto;
     carrito.push(objetoEnCarrito);
     localStorage.setItem("carrito",JSON.stringify(carrito));
     renderCarrito(objetoEnCarrito, "crear");
-    renderPrecio("modificacion");
   } else {
     objetoEnCarrito.cantidad++;
     localStorage.setItem("carrito",JSON.stringify(carrito));
     renderCarrito(objetoEnCarrito, "modificar");
-    renderPrecio("modificar");
   }
+  renderPrecio("modificacion");
   alertaNotificacion(`Has Agregado ${objetoEnCarrito.cantidad} producto/s de "${nombre}" al Carrito!!`, "verde" )
 };
 
@@ -139,18 +145,21 @@ const renderTotal = () => {
   let section = document.getElementById("sectionInicio"); 
   for (let i of productos){ 
     let div = document.createElement("div");  
-    div.classList.add("card", "col", "cardInicio"); 
+    div.classList.add("card", "col", "cardInicio");
+    div.id = `${i.nombre.replace(/ /g, ".")}`
     div.innerHTML=`
     <img src="./Assets/Galeria/reescaladas/${i.nombre}.jpg" class="card-img-top" alt="...">
     <div class="card-body">
       <h5 class="card-title">${i.nombre}</h5>
       <p class="card-text">precio: ${i.precio}</p>
-      <button type="button" class="btn btn-primary" id="${i.nombre}">Añadir al carrito </button>
+      <button type="button" class="btn btn-primary">Añadir al carrito </button>
     </div>
     `;
     section.appendChild(div); 
-    let btn = document.getElementById(`${i.nombre}`);
-    btn.addEventListener("click", agregarAlCarritoStorage)
+    let btn = section.querySelectorAll(`button`);
+    for (let i of btn){
+      i.addEventListener("click", agregarAlCarritoStorage);
+    }
   }
 };
 
