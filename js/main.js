@@ -111,17 +111,8 @@ const agregarAlCarritoStorage = (e) => {
   let carrito = JSON.parse(localStorage.getItem("carrito")); 
   let objeto = productos.find((el) => el.nombre === nombre); //objeto que se quiere agregar
   let objetoEnCarrito = carrito.find((el) => el.nombre === nombre);  //verificacion si el objeto ya estaba en el carrito
-
-  if (!objetoEnCarrito){ //si el producto no estaba en el carrito
-    objetoEnCarrito = objeto;
-    carrito.push(objetoEnCarrito);
-    localStorage.setItem("carrito",JSON.stringify(carrito));
-    renderCarrito(objetoEnCarrito, "crear");
-  } else { //si ya estaba el producto en el carrito
-    objetoEnCarrito.cantidad++;
-    localStorage.setItem("carrito",JSON.stringify(carrito));
-    renderCarrito(objetoEnCarrito, "modificar");
-  }
+  // si el producto no estaba en el carrito : si ya estaba el producto en el carrito
+  !objetoEnCarrito ? (objetoEnCarrito = objeto, carrito.push(objetoEnCarrito),localStorage.setItem("carrito",JSON.stringify(carrito)),renderCarrito(objetoEnCarrito, "crear")) : (objetoEnCarrito.cantidad++,localStorage.setItem("carrito",JSON.stringify(carrito)),renderCarrito(objetoEnCarrito, "modificar"))
   renderPrecio("modificacion");
   alertaNotificacion(`Has Agregado ${objetoEnCarrito.cantidad} producto/s de "${nombre}" al Carrito!!`, "verde" )
 };
